@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RGB Color & Border Control</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    color: #333;
+  }
+
+  #demoParagraph {
+    max-width: 500px;
+    padding: 20px;
+    background: #fff;
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    border-width: 2px;
+    color: rgb(0, 0, 0);
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .controls {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 25px 30px;
+    width: 320px;
+  }
+
+  .control-group {
+    margin-bottom: 18px;
+  }
+
+  .control-group h3 {
+    margin: 0 0 8px 0;
+    font-size: 0.95em;
+    color: #444;
+  }
+
+  .rgb-inputs {
+    display: flex;
+    gap: 8px;
+  }
+
+  .rgb-inputs label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75em;
+    color: #666;
+  }
+
+  .rgb-inputs input[type="number"] {
+    width: 60px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 3px;
+  }
+
+  .control-group input[type="range"] {
+    width: 100%;
+  }
+
+  #widthValue {
+    font-weight: bold;
+    color: #4b6cb7;
+  }
+</style>
+</head>
+<body>
+
+  <h1>RGB Text & Border Playground</h1>
+
+  <p id="demoParagraph">
+    This is some dummy text that can change colors. The border size and colors and also change to.
+  </p>
+
+  <div class="controls">
+
+    <div class="control-group">
+      <h3>Text Color (RGB)</h3>
+      <div class="rgb-inputs">
+        <label>R
+          <input type="number" id="textR" min="0" max="255" value="0">
+        </label>
+        <label>G
+          <input type="number" id="textG" min="0" max="255" value="0">
+        </label>
+        <label>B
+          <input type="number" id="textB" min="0" max="255" value="0">
+        </label>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <h3>Border Color (RGB)</h3>
+      <div class="rgb-inputs">
+        <label>R
+          <input type="number" id="borderR" min="0" max="255" value="0">
+        </label>
+        <label>G
+          <input type="number" id="borderG" min="0" max="255" value="0">
+        </label>
+        <label>B
+          <input type="number" id="borderB" min="0" max="255" value="0">
+        </label>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <h3>Border Width: <span id="widthValue">2px</span></h3>
+      <input type="range" id="borderWidth" min="0" max="20" value="2">
+    </div>
+
+  </div>
+
+  <script>
+    const paragraph = document.getElementById('demoParagraph');
+
+    const textR = document.getElementById('textR');
+    const textG = document.getElementById('textG');
+    const textB = document.getElementById('textB');
+
+    const borderR = document.getElementById('borderR');
+    const borderG = document.getElementById('borderG');
+    const borderB = document.getElementById('borderB');
+
+    const borderWidth = document.getElementById('borderWidth');
+    const widthValue = document.getElementById('widthValue');
+
+    function clamp(value) {
+      const n = Number(value);
+      if (isNaN(n)) return 0;
+      return Math.min(255, Math.max(0, n));
+    }
+
+    function updateStyles() {
+      const tR = clamp(textR.value);
+      const tG = clamp(textG.value);
+      const tB = clamp(textB.value);
+
+      const bR = clamp(borderR.value);
+      const bG = clamp(borderG.value);
+      const bB = clamp(borderB.value);
+
+      const width = borderWidth.value;
+
+      paragraph.style.color = `rgb(${tR}, ${tG}, ${tB})`;
+      paragraph.style.borderColor = `rgb(${bR}, ${bG}, ${bB})`;
+      paragraph.style.borderWidth = `${width}px`;
+
+      widthValue.textContent = `${width}px`;
+    }
+
+    [textR, textG, textB, borderR, borderG, borderB, borderWidth].forEach(input => {
+      input.addEventListener('input', updateStyles);
+    });
+  </script>
+
+</body>
+</html>
